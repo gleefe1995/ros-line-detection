@@ -15,8 +15,10 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   cv_bridge
   image_transport
+  geometry_msgs
 )
 find_package(OpenCV REQUIRED)
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -52,11 +54,10 @@ find_package(OpenCV REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+ add_message_files(
+   FILES
+   direction.msg
+ )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -76,6 +77,7 @@ find_package(OpenCV REQUIRED)
  generate_messages(
    DEPENDENCIES
    std_msgs
+   geometry_msgs
  )
 
 ################################################
@@ -110,7 +112,9 @@ find_package(OpenCV REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES line_detection
-  CATKIN_DEPENDS cv_bridge image_transport roscpp sensor_msgs std_msgs
+  CATKIN_DEPENDS cv_bridge image_transport roscpp sensor_msgs std_msgs message_runtime geometry_msgs
+ # EXPORTED_TARGETS line_detection_generate_messages_cpp
+  
 #  DEPENDS system_lib
 )
 
@@ -212,9 +216,15 @@ include_directories(
 # catkin_add_nosetests(test)
 
 add_executable(line_detection_pub src/pub.cpp)
-target_link_libraries(line_detection_pub ${catkin_LIBRARIES}
-${OpenCV_LIBS})
+target_link_libraries(line_detection_pub ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(line_detection_pub line_detection_generate_messages_cpp)
 
 add_executable(line_detection_sub src/sub.cpp)
-target_link_libraries(line_detection_sub ${catkin_LIBRARIES}
-${OpenCV_LIBS})
+target_link_libraries(line_detection_sub ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(line_detection_sub line_detection_generate_messages_cpp)
+
+add_executable(turtlebot_move src/turtlebot_move.cpp)
+target_link_libraries(turtlebot_move ${catkin_LIBRARIES})
+add_dependencies(turtlebot_move line_detection_generate_messages_cpp)
+
+#add_dependencies(turtlebot_move ${catkin_EXPORTED_TARGETS})
