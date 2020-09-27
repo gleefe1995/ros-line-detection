@@ -184,7 +184,9 @@ int main(int argc, char **argv)
 
 
   ros::NodeHandle nh;
-
+  //ros::Rate rate(10);
+  
+  
   ros::Subscriber sub = nh.subscribe("camera/image", 5, imageCallback);
   pub = nh.advertise<line_detection::direction>("direction",1);
 
