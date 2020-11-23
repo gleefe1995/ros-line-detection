@@ -1,12 +1,11 @@
 # LINE DETECTION
 
-
-
 ros melodic 환경에서 노트북 웹캠으로 차선인식과 영상 송수신을 하는 package 입니다. turtlebot3에서 usb cam으로 실행 가능합니다. 
 
-'$rosrun line_detection line_detection_pub'
+`$rosrun line_detection line_detection_pub`
 
-'$rosrun line_detection line_detection_sub' 
+`$rosrun line_detection line_detection_sub`
+
 
 
 
